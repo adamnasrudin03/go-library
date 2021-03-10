@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"go-library/entity"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -26,9 +27,9 @@ func SetupDatabaseConnection() *gorm.DB {
 	if err != nil {
 		panic("Failed to create a connection to database")
 	}
-	//nanti kita isi modelnya di sini
-	//db.AutoMigrate()
-	
+	//migration database
+	db.AutoMigrate(&entity.User{}, &entity.Book{})
+
 	return db
 }
 
