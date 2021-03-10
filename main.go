@@ -1,13 +1,28 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"go-library/config"
+	"go-library/controller"
 
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
+)
+
+
+var (
+	db             *gorm.DB                  = config.SetupDatabaseConnection()
+	authController controller.AuthController = controller.NewAuthController()
+)
 func main() {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	r.Run() 
+	defer config.CloseDatabaseConnection(db)
+	router := gin.Default()
+
+	authRoutes := router.Group("/api/v1/auth")
+	{
+		authRoutes.POST("/login", authController.Login)
+		authRoutes.POST("/register", authController.Register)
+	}
+
+
+	router.Run() 
 }
