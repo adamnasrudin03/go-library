@@ -14,9 +14,9 @@ type Response struct {
 type EmptyObj struct{}
 
 //BuildResponse method is to inject data value to dynamic success response
-func BuildResponse(status string, message string, data interface{}) Response {
+func BuildResponse( message string, data interface{}) Response {
 	res := Response{
-		Status:  status,
+		Status:  "success",
 		Message: message,
 		Errors:  nil,
 		Data:    data,
